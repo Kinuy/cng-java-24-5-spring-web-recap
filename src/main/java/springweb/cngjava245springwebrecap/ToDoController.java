@@ -1,12 +1,11 @@
 package springweb.cngjava245springwebrecap;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 public class ToDoController {
     private final ToDoService toDoService;
 
@@ -14,10 +13,30 @@ public class ToDoController {
         this.toDoService = toDoService;
     }
 
-//    @GetMapping
+    @GetMapping("/todo")
+    public List<ToDo> getToDos(){
+        return toDoService.getToDo();
+    }
 
+    @GetMapping("/todo/{id}")
+    public ToDo getToDoById(@PathVariable String id){
+        return toDoService.getToDoById(id);
+    }
 
-//    @PostMapping
+    @PostMapping("/todo")
+    public ToDo postToDo(@RequestBody ToDoDto toDoDto){
+        return toDoService.postDoTo(toDoDto);
+    }
+
+    @PutMapping("/todo/{id}")
+    public ToDo putToDoById(@PathVariable String id, @RequestBody ToDoDto toDoDto){
+        return toDoService.putDoToById(id,toDoDto);
+    }
+
+    @DeleteMapping("/todo/{id}")
+    public void deleteToDoById(@PathVariable String id){
+        toDoService.deleteToDoById(id);
+    }
 
 
 }
