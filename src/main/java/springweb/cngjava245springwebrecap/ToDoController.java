@@ -25,7 +25,7 @@ public class ToDoController {
 
     @PostMapping("/todo")
     public ToDo postToDo(@RequestBody ToDoDto toDoDto){
-        return toDoService.postDoTo(toDoDto);
+        return toDoService.postToDo(toDoDto);
     }
 
     @PutMapping("/todo/{id}")

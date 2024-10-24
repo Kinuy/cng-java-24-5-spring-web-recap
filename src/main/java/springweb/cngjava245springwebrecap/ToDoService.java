@@ -4,12 +4,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ToDoService {
     private final ToDoRepository toDoRepository;
-    public ToDoService(ToDoRepository toDoRepository){
+    private final IdService idService;
+
+    public ToDoService(ToDoRepository toDoRepository,IdService idService){
         this.toDoRepository = toDoRepository;
+        this.idService = idService;
     }
 
     public List<ToDo> getToDo() {
@@ -17,7 +21,7 @@ public class ToDoService {
         return toDoRepository.findAll();
     }
 
-    public ToDo postDoTo(ToDoDto toDoDto) {
+    public ToDo postToDo(ToDoDto toDoDto) {
         ToDo todo = new ToDo(toDoDto.id(),toDoDto.description(),toDoDto.status());
         return toDoRepository.save(todo);
     }
@@ -36,7 +40,14 @@ public class ToDoService {
         return toDoRepository.save(toDoToUpdate);
     }
 
-    public void deleteToDoById(String id) {
-        toDoRepository.delete(toDoRepository.findById(id).get());
+    public boolean deleteToDoById(String id) {
+        //toDoRepository.delete(toDoRepository.findById(id).get());
+
+        if (toDoRepository.existsById(id)){
+            toDoRepository.deleteById(id);
+            return true;
+        }else {
+            throw new NoSuchElementException("No ToDo found with Id:" + id);
+        }
     }
 }
